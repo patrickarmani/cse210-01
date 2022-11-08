@@ -1,9 +1,10 @@
 '''
-File: tictactoes.py
+File: tic-tac-toe.py
 Author: Patrick Armani
 '''
-currentPlayer = ""
+currentPlayer = "X"
 winner = None
+gameRunning = True
 def main():
     player = next_player("")
     board = create_board()
@@ -38,7 +39,8 @@ def is_a_draw(board):
     return True 
 
 # check for win or tie
-def has_winner(board):
+def checkHorizontle(board):
+    global winner
     if board[0] == board[1] == board[2] and board[1] != "_":
         winner = board [0]
         return True
@@ -49,7 +51,9 @@ def has_winner(board):
         winner = board[6]
         return True
     
-    elif board[0] == board[3] == board[6] and board[0] != "_":
+def checkRow(board):
+    global winner
+    if board[0] == board[3] == board[6] and board[0] != "_":
         winner = board[0]
         return True
     elif board[1] == board[4] == board[7] and board[1] != "_":
@@ -59,12 +63,32 @@ def has_winner(board):
         winner = board[0]
         return True
     
-    elif board[0] == board[4] == board[8] and board[0] != "_":
+def checkDiag(board):
+    global winner
+    if board[0] == board[4] == board[8] and board[0] != "_":
         winner = board[0]
         return True
     elif board[2] == board[4] == board[6] and board[2] != "_":
         winner = board[2]
         return True
+    
+def checkTie(board):
+    global gameRunning
+    if "_" not in board:
+        display_board(board)
+        print("It is a tie!")
+        gameRunning = False
+
+def has_winner(board):
+    if checkDiag(board) or checkHorizontle(board) or checkRow(board):
+        print(f"The winner is {winner} ")
+        
+def switchPlayer():
+    global currentPlayer
+    if currentPlayer == "X":
+        currentPlayer = "0"
+    else:
+        currentPlayer = "X"
     
 def make_move(player, board):
     square = int(input(f"{player}'s turn to choose a square (1-9): "))
